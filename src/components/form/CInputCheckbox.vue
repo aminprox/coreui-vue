@@ -1,5 +1,5 @@
 <template>
-  <CFormGroup v-bind="{validFeedback, invalidFeedback, tooltipFeedback,
+  <CFormGroup v-bind="{append, prepend, validFeedback, invalidFeedback, tooltipFeedback,
                        description, class: computedClasses}">
     <template #input>
       <input
@@ -15,20 +15,16 @@
 
 
     <template #label-after-input>
-      <slot name="label">
-        <label v-if="label" :for="safeId" :class="labelClasses">
+      <label v-if="label" :for="safeId" :class="labelClasses
+        <slot name="label">
           {{label}}
-        </label>
-      </slot>
+        </slot>
+      </label>
     </template>
 
 
-    <template
-      v-for="slot in ['valid-feedback', 'invalid-feedback', 'description']"
-      #[slot]
-    >
-      <slot :name="slot">
-      </slot>
+    <template v-for="slot in $options.slots" #[slot]>
+      <slot :name="slot"></slot>
     </template>
   </CFormGroup>
 </template>
@@ -40,6 +36,16 @@ import CFormGroup from './CFormGroup'
 
 export default {
   name: 'CInputCheckbox',
+  slots: [
+    'append',
+    'prepend-content',
+    'append-content',
+    'prepend',
+    'validFeedback',
+    'invalidFeedback',
+    'tooltipFeedback',
+    'description'
+  ],
   inheritAttrs: false,
   components: { CFormGroup },
   mixins: [sharedComputedProps],
@@ -49,7 +55,8 @@ export default {
     // invalidFeedback: String,
     // tooltipFeedback: Boolean,
     // description: String,
-
+    // append: String,
+    // prepend: String,
     // label: String,
     // wasValidated: Boolean,
     // isValid: {
